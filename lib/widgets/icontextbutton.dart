@@ -21,8 +21,8 @@ class IconTextButton extends StatelessWidget {
                 colors: [Colors.deepPurple, Colors.deepPurpleAccent]),
             color: Colors.deepPurple,
             borderRadius: BorderRadius.circular(5)),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
+        child: Wrap(
+          alignment: WrapAlignment.center,
           children: [
             Icon(
               icon,

@@ -31,212 +31,261 @@ class _UpgradeDowngradeScreenState extends State<UpgradeDowngradeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-            gradient: LinearGradient(colors: [
-          const Color.fromARGB(255, 236, 236, 236),
-          const Color.fromARGB(255, 190, 190, 190)
-        ])),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Αρχική ημερομηνία (συνήθως η σημερινή): ${startDate.day.toString()}/${startDate.month.toString()}/${startDate.year.toString()}',
-                  style: TextStyle(fontSize: 30),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                IconTextButton(
-                  icon: Icons.date_range,
-                  text: 'Επιλογή ημερομηνίας',
-                  function: datePickFun(isStartDate: true),
-                )
-              ],
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Τελική ημερομηνία (συνήθως η ημερομηνία λήξης του πακέτου): ${endDate.day.toString()}/${endDate.month.toString()}/${endDate.year.toString()}',
-                  style: TextStyle(fontSize: 30),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                IconTextButton(
-                  icon: Icons.date_range,
-                  text: 'Επιλογή ημερομηνίας',
-                  function: datePickFun(isStartDate: false),
-                )
-              ],
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Ημέρες μεταξύ των δύο ημερομηνιών: ${numberOfDays}',
-                  style: TextStyle(fontSize: 30),
-                )
-              ],
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Ο πελάτης είχε κάνει ανανέωση για: ',
-                  style: TextStyle(fontSize: 30),
-                ),
-                DropdownMenu(
-                    initialSelection: RenewalPeriod.oneYear,
-                    onSelected: (value) {
-                      if (value != null) {
-                        setState(() {
-                          renewal = value;
-                        });
-                      }
-                    },
-                    dropdownMenuEntries: <DropdownMenuEntry<RenewalPeriod>>[
-                      DropdownMenuEntry(
-                          value: RenewalPeriod.oneMonth, label: '1 μήνα'),
-                      DropdownMenuEntry(
-                          value: RenewalPeriod.threeMonths, label: '3 μήνες'),
-                      DropdownMenuEntry(
-                          value: RenewalPeriod.sixMonths, label: '6 μήνες'),
-                      DropdownMenuEntry(
-                          value: RenewalPeriod.oneYear, label: '1 χρόνο'),
-                      DropdownMenuEntry(
-                          value: RenewalPeriod.twoYears, label: '2 χρόνια'),
-                      DropdownMenuEntry(
-                          value: RenewalPeriod.threeYears, label: '3 χρόνια'),
-                    ])
-              ],
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Κόστος τρέχοντος πακέτου για ανανέωση για ${getRenewString()}: ',
-                  style: TextStyle(fontSize: 30),
-                ),
-                Container(
-                  width: 80,
-                  child: TextField(
-                    keyboardType: TextInputType.number,
-                    // inputFormatters: <TextInputFormatter>[
-                    //   FilteringTextInputFormatter.digitsOnly,
-                    // ],
-                    onChanged: (value) {
-                      setState(() {
-                        value == ''
-                            ? costOldPack = 0
-                            : costOldPack = double.parse(value);
-                      });
-                    },
-                    controller: textEditingController,
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(5)))),
+      body: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.all(40),
+          decoration: BoxDecoration(
+              gradient: LinearGradient(colors: [
+            const Color.fromARGB(255, 236, 236, 236),
+            const Color.fromARGB(255, 190, 190, 190)
+          ])),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Wrap(
+                alignment: WrapAlignment.center,
+                children: [
+                  Text(
+                    textAlign: TextAlign.center,
+                    'Αρχική ημερομηνία (συνήθως η σημερινή): ${startDate.day.toString()}/${startDate.month.toString()}/${startDate.year.toString()}',
+                    style: TextStyle(
+                      fontSize: 30,
+                    ),
                   ),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Text(
-                  '**',
-                  style: TextStyle(fontSize: 30),
-                )
-              ],
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Κόστος νέου πακέτου για ανανέωση για ${getRenewString()}: ',
-                  style: TextStyle(fontSize: 30),
-                ),
-                Container(
-                  width: 80,
-                  child: TextField(
-                    keyboardType: TextInputType.number,
-                    // inputFormatters: <TextInputFormatter>[
-                    //   FilteringTextInputFormatter.digitsOnly,
-                    // ],
-                    onChanged: (value) {
-                      setState(() {
-                        value == ''
-                            ? costNewPack = 0
-                            : costNewPack = double.parse(value);
-                      });
-                    },
-                    controller: textEditingController2,
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(5)))),
+                  SizedBox(
+                    width: 10,
                   ),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Text(
-                  '**',
-                  style: TextStyle(fontSize: 30),
-                )
-              ],
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            IconTextButton(
-                icon: Icons.calculate,
-                text: 'Υπολογισμός ποσού',
-                function: () {
-                  setState(() {
-                    finalMoney = calculateFinal();
-                  });
-                }),
-            SizedBox(
-              height: 10,
-            ),
-            (finalMoney >= 0)
-                ? Text(
-                    'Το τελικό ποσό πληρωμής είναι: ${finalMoney.toStringAsFixed(2)} €',
+                  IconTextButton(
+                    icon: Icons.date_range,
+                    text: 'Επιλογή ημερομηνίας',
+                    function: datePickFun(isStartDate: true),
+                  )
+                ],
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Divider(
+                color: Colors.deepPurple,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Wrap(
+                alignment: WrapAlignment.center,
+                children: [
+                  Text(
+                    textAlign: TextAlign.center,
+                    'Τελική ημερομηνία (συνήθως η ημερομηνία λήξης του πακέτου): ${endDate.day.toString()}/${endDate.month.toString()}/${endDate.year.toString()}',
+                    style: TextStyle(fontSize: 30),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  IconTextButton(
+                    icon: Icons.date_range,
+                    text: 'Επιλογή ημερομηνίας',
+                    function: datePickFun(isStartDate: false),
+                  )
+                ],
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Divider(
+                color: Colors.deepPurple,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Wrap(
+                alignment: WrapAlignment.center,
+                children: [
+                  Text(
+                    textAlign: TextAlign.center,
+                    'Ημέρες μεταξύ των δύο ημερομηνιών: ${numberOfDays}',
                     style: TextStyle(fontSize: 30),
                   )
-                : Text(
-                    'Θα χρειαστεί να επιστραφεί στον πελάτη το ποσό: ${(-finalMoney).toStringAsFixed(2)} €',
+                ],
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Divider(
+                color: Colors.deepPurple,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Wrap(
+                alignment: WrapAlignment.center,
+                children: [
+                  Text(
+                    textAlign: TextAlign.center,
+                    'Ο πελάτης είχε κάνει ανανέωση για: ',
                     style: TextStyle(fontSize: 30),
                   ),
-            SizedBox(
-              height: 30,
-            ),
-            Text(
-                '*Αν ο πελάτης έχει πληρώσει ανανέωση και αναβάθμιση αθροίζουμε τις δύο παραγγελίες'),
-            Text(
-                '**Η υποδιαστολή είναι ο χαρακτήρας τελεία "." και όχι το κόμμα'),
-            Text(
-                'Αν οι τιμές που συμπληρωθούν είναι με ΦΠΑ το αποτέλεσμα θα είναι με το ΦΠΑ και το αντίθετο. Προτείνεται να συμπληρώνονται οι τελικές τιμές'),
-          ],
+                  DropdownMenu(
+                      initialSelection: RenewalPeriod.oneYear,
+                      onSelected: (value) {
+                        if (value != null) {
+                          setState(() {
+                            renewal = value;
+                          });
+                        }
+                      },
+                      dropdownMenuEntries: <DropdownMenuEntry<RenewalPeriod>>[
+                        DropdownMenuEntry(
+                            value: RenewalPeriod.oneMonth, label: '1 μήνα'),
+                        DropdownMenuEntry(
+                            value: RenewalPeriod.threeMonths, label: '3 μήνες'),
+                        DropdownMenuEntry(
+                            value: RenewalPeriod.sixMonths, label: '6 μήνες'),
+                        DropdownMenuEntry(
+                            value: RenewalPeriod.oneYear, label: '1 χρόνο'),
+                        DropdownMenuEntry(
+                            value: RenewalPeriod.twoYears, label: '2 χρόνια'),
+                        DropdownMenuEntry(
+                            value: RenewalPeriod.threeYears, label: '3 χρόνια'),
+                      ])
+                ],
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Divider(
+                color: Colors.deepPurple,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Wrap(
+                alignment: WrapAlignment.center,
+                children: [
+                  Text(
+                    textAlign: TextAlign.center,
+                    'Κόστος τρέχοντος πακέτου για ανανέωση για ${getRenewString()}: ',
+                    style: TextStyle(fontSize: 30),
+                  ),
+                  Container(
+                    width: 80,
+                    child: TextField(
+                      keyboardType: TextInputType.number,
+                      // inputFormatters: <TextInputFormatter>[
+                      //   FilteringTextInputFormatter.digitsOnly,
+                      // ],
+                      onChanged: (value) {
+                        setState(() {
+                          value == ''
+                              ? costOldPack = 0
+                              : costOldPack = double.parse(value);
+                        });
+                      },
+                      controller: textEditingController,
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5)))),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    '**',
+                    style: TextStyle(fontSize: 30),
+                  )
+                ],
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Divider(
+                color: Colors.deepPurple,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Wrap(
+                alignment: WrapAlignment.center,
+                children: [
+                  Text(
+                    textAlign: TextAlign.center,
+                    'Κόστος νέου πακέτου για ανανέωση για ${getRenewString()}: ',
+                    style: TextStyle(fontSize: 30),
+                  ),
+                  Container(
+                    width: 80,
+                    child: TextField(
+                      keyboardType: TextInputType.number,
+                      // inputFormatters: <TextInputFormatter>[
+                      //   FilteringTextInputFormatter.digitsOnly,
+                      // ],
+                      onChanged: (value) {
+                        setState(() {
+                          value == ''
+                              ? costNewPack = 0
+                              : costNewPack = double.parse(value);
+                        });
+                      },
+                      controller: textEditingController2,
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5)))),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    '**',
+                    style: TextStyle(fontSize: 30),
+                  )
+                ],
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Divider(
+                color: Colors.deepPurple,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              IconTextButton(
+                  icon: Icons.calculate,
+                  text: 'Υπολογισμός ποσού',
+                  function: () {
+                    setState(() {
+                      finalMoney = calculateFinal();
+                    });
+                  }),
+              SizedBox(
+                height: 10,
+              ),
+              (finalMoney >= 0)
+                  ? Text(
+                      textAlign: TextAlign.center,
+                      'Το τελικό ποσό πληρωμής είναι: ${finalMoney.toStringAsFixed(2)} €',
+                      style: TextStyle(fontSize: 30),
+                    )
+                  : Text(
+                      textAlign: TextAlign.center,
+                      'Θα χρειαστεί να επιστραφεί στον πελάτη το ποσό: ${(-finalMoney).toStringAsFixed(2)} €',
+                      style: TextStyle(fontSize: 30),
+                    ),
+              SizedBox(
+                height: 30,
+              ),
+              Text(
+                  textAlign: TextAlign.center,
+                  '**Η υποδιαστολή είναι ο χαρακτήρας τελεία "." και όχι το κόμμα'),
+              Text(
+                  textAlign: TextAlign.center,
+                  'Αν οι τιμές που συμπληρωθούν είναι με ΦΠΑ το αποτέλεσμα θα είναι με το ΦΠΑ και το αντίθετο. Προτείνεται να συμπληρώνονται οι τελικές τιμές'),
+            ],
+          ),
         ),
       ),
     );
